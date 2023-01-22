@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Model;
+use PDO;
 
 class Task extends Model {
     /**
@@ -19,6 +20,44 @@ class Task extends Model {
 
         return $sth->fetchAll();
     }
+
+    /**
+     * Gets filtered tasks.
+     *
+     * @param array $conditions
+     * @param int|null $limit
+     * @param int $offset
+     * @return array
+     */
+    public function getFiltered(array $conditions = [], int $limit = 0, int $offset = 0): array
+    {
+        $query = "SELECT * FROM tasks";
+
+        $where = "";
+        $params = [];
+        foreach($conditions as $field => $value) {
+            $where .= " $field = :$field AND";
+            $params[":$field"] = $value;
+        }
+        if (!empty($where)) {
+            $where = " WHERE" . substr($where, 0, -4);
+            $query .= $where;
+        }
+
+        if (
+            $limit &&
+            is_numeric($limit) &&
+            is_numeric($offset)
+        ) {
+            $query .= " LIMIT $limit OFFSET $offset";
+        }
+
+        $stmt = $this->dbh->prepare($query);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     /**
      * Number of tasks in the table.
