@@ -2,6 +2,7 @@
 /** @var array $tasks */
 /** @var int $taskCount */
 /** @var int $limit */
+/** @var array $order */
 ?>
 
 <!doctype html>
@@ -84,8 +85,14 @@
     <div class="row">
         <div class="col d-flex justify-content-end">
             <ul class="pagination">
+
+                <?php
+                    $orderSegment = (isset($order['order_by'])) ? "order_by={$order['order_by']}&" : '';
+                    $orderSegment .= (isset($order['order_dir'])) ? "order_dir={$order['order_dir']}&" : '';
+                ?>
+
                 <li class="page-item">
-                    <a class="page-link" href="/?page=1" aria-label="Previous">
+                    <a class="page-link" href="/?<?php echo $orderSegment; ?>page=1" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -93,13 +100,13 @@
                 <?php for ($pageIndex = 1; $pageIndex <= ceil($taskCount/$limit); $pageIndex++) : ?>
 
                     <li class="page-item">
-                        <a class="page-link" href="/?page=<?php echo $pageIndex; ?>"><?php echo $pageIndex; ?></a>
+                        <a class="page-link" href="/?<?php echo $orderSegment; ?>page=<?php echo $pageIndex; ?>"><?php echo $pageIndex; ?></a>
                     </li>
 
                 <?php endfor; ?>
 
                 <li class="page-item">
-                    <a class="page-link" href="/?page=<?php echo ceil($taskCount/$limit); ?>" aria-label="Next">
+                    <a class="page-link" href="/?<?php echo $orderSegment; ?>page=<?php echo ceil($taskCount/$limit); ?>" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

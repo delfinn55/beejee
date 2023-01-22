@@ -39,8 +39,8 @@ class TaskController
         $taskCount = $this->model->count();
 
         $order = [
-            'orderBy' => $_GET['order_by'] ?? 'id',
-            'orderDir' => $_GET['order_dir'] ?? 'asc',
+            'order_by' => $_GET['order_by'] ?? '',
+            'order_dir' => $_GET['order_dir'] ?? '',
         ];
 
         $page = Pagination::getPage($taskCount, $perPage);
@@ -50,6 +50,7 @@ class TaskController
             ->with('tasks', $tasks)
             ->with('taskCount', $taskCount)
             ->with('limit', $perPage)
+            ->with('order', $order)
             ->render();
     }
 

@@ -39,9 +39,9 @@ class Task extends Model {
             . " JOIN users AS u ON t.user_id = u.id";
 
         // Ordering
-        $orderDir = $order['orderDir'];
+        $orderDir = $order['order_dir'];
         $orderBy = 'id';
-        switch ($order['orderBy']) {
+        switch ($order['order_by']) {
             case 'name':
                 $orderBy = 'u.name';
                 break;
