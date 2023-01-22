@@ -17,11 +17,15 @@ class UserController extends Controller
      */
     public function loginForm(): string
     {
+        if (isset($_SESSION['user'])) {
+            header('Location: /');
+        }
+
         return View::make('users/login')->render();
     }
 
     /**
-     * Handle user login.
+     * User login.
      *
      * @throws Exception
      */
@@ -43,8 +47,23 @@ class UserController extends Controller
             return View::make('users/login')->render();
         }
 
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['is_admin'] = $user['is_admin'];
+        $_SESSION['user'] = [
+            'user_id' => $user['id'],
+            'is_admin' => $user['is_admin'],
+        ];
+
         header('Location: /');
+    }
+
+    /**
+     * User logout.
+     *
+     * @return void
+     */
+    public function logout(): void
+    {
+        unset($_SESSION['user']);
+        session_destroy();
+        header('Location: /user/login');
     }
 }

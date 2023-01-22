@@ -34,6 +34,7 @@ $app->router->addRoute('post', '/task/create', [new TaskController(), 'create'])
 
 $app->router->addRoute('get', '/user/login', [new UserController(), 'loginForm']);
 $app->router->addRoute('post', '/user/login', [new UserController(), 'login']);
+$app->router->addRoute('post', '/user/logout', [new UserController(), 'logout']);
 
 /*
 --------------------------------------------------------------------------
