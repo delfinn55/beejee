@@ -32,18 +32,12 @@ class Task extends Model {
     public function getFiltered(int $limit = 0, int $offset = 0, array $conditions = []): array
     {
         $query = "SELECT * FROM tasks";
-
-        $where = "";
         $params = [];
-        foreach($conditions as $field => $value) {
-            $where .= " $field = :$field AND";
-            $params[":$field"] = $value;
-        }
-        if (!empty($where)) {
-            $where = " WHERE" . substr($where, 0, -4);
-            $query .= $where;
-        }
 
+        // WHERE block
+        $this->switchConditions($conditions, $query, $params);
+
+        // LIMIT block
         if (
             $limit &&
             is_numeric($limit) &&
@@ -58,6 +52,27 @@ class Task extends Model {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Add conditions to query.
+     *
+     * @param $conditions
+     * @param $query
+     * @param $params
+     * @return void
+     */
+    protected function switchConditions($conditions, &$query, &$params): void
+    {
+        $where = "";
+        foreach($conditions as $field => $value) {
+            $where .= " $field = :$field AND";
+            $params[":$field"] = $value;
+        }
+        if (!empty($where)) {
+            $where = " WHERE" . substr($where, 0, -4);
+            $query .= $where;
+        }
+    }
+
 
     /**
      * Number of tasks in the table.
@@ -69,16 +84,7 @@ class Task extends Model {
     {
         $query = "SELECT COUNT(*) FROM tasks";
 
-        $where = "";
-        $params = [];
-        foreach($conditions as $key => $value) {
-            $where .= " $key = :$key AND";
-            $params[":$key"] = $value;
-        }
-        if (!empty($where)) {
-            $where = " WHERE" . substr($where, 0, -4);
-            $query .= $where;
-        }
+        $this->switchConditions($conditions, $query, $params);
 
         $stmt = $this->dbh->prepare($query);
         $stmt->execute($params);
