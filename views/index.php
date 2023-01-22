@@ -49,8 +49,12 @@
         </div>
     </div>
 
+
+    <?php if (!empty($tasks)) : ?>
+
     <div class="row my-4">
         <div class="col">
+
             <table id="tasks__list" class="table table-hover">
                 <thead>
                 <tr>
@@ -65,8 +69,7 @@
                     <?php endif; ?>
                 </tr>
                 </thead>
-
-
+                    
                 <?php foreach ($tasks as $task) : ?>
 
                     <tr class="tasks__item">
@@ -95,6 +98,7 @@
                     </tr>
 
                 <?php endforeach; ?>
+
             </table>
         </div>
     </div>
@@ -130,6 +134,18 @@
             </ul>
         </div>
     </div>
+
+    <?php else : ?>
+
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-warning" role="alert">
+                    No tasks yet
+                </div>
+            </div>
+        </div>
+
+    <?php endif; ?>
 
 </div>
 
