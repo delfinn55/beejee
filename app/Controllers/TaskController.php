@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Views\View;
 use Exception;
+use JetBrains\PhpStorm\NoReturn;
 
 class TaskController extends Controller
 {
@@ -109,6 +110,11 @@ class TaskController extends Controller
      */
     public function editForm(): bool|string
     {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']['is_admin']) {
+            header('Location: /');
+            exit();
+        }
+
         $task = new Task();
         $taskItem = $task->getById($_GET['id']);
 
@@ -118,10 +124,19 @@ class TaskController extends Controller
     }
 
     /**
-     * @throws Exception
+     * Update the task.
+     *
+     * @return void
      */
-    public function update()
+    public function update(): void
     {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']['is_admin']) {
+            $_SESSION['flash']['validateErrors'] = ['You are have not permissions for editing the task. Please, log in.'];
+
+            header('Location: /user/login');
+            exit();
+        }
+
         if (empty($_POST['taskId'])) {
             header('Location: /');
             exit();
@@ -148,6 +163,6 @@ class TaskController extends Controller
         $_SESSION['flash']['successMessages'] = ['Your task have updated successfully!'];
 
         header('Location: /');
-        exit();
+        return;
     }
 }
