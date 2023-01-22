@@ -75,6 +75,10 @@ class TaskController
         $data['userName'] = $_POST['userName'] ?? '';
         $data['taskDescription'] = $_POST['taskDescription'] ?? '';
 
+        foreach ($data as $key => $value) {
+            $data[$key] = htmlspecialchars($value, ENT_QUOTES);
+        }
+
         // Validation
         if (!empty($this->validationErrors($data))) {
             return View::make('tasks/add')->render();

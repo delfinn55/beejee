@@ -40,7 +40,7 @@
                     Email <a href="/?order_by=email&order_dir=asc">[a-z]</a><a href="/?order_by=email&order_dir=desc">[z-a]</a>
                 </li>
                 <li>
-                    Status <a href="/?order_by=status&order_dir=asc">[a-z]</a><a href="/?order_by=status&order_dir=desc">[z-a]</a>
+                    Status <a href="/?order_by=status&order_dir=asc">[x]</a><a href="/?order_by=status&order_dir=desc">[v]</a>
                 </li>
             </ul>
         </div>
