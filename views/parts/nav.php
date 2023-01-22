@@ -4,7 +4,11 @@
             <div class="navbar-nav">
                 <a class="nav-link" aria-current="page" href="/">->Home</a>
                 <a class="nav-link" aria-current="page" href="/task/add">->Add task</a>
-                <a class="nav-link" aria-current="page" href="/user/login">->Login</a>
+                <?php if (isset($_SESSION['user_id'])) : ?>
+                    <a class="nav-link" aria-current="page" href="/user/logout">->Logout</a>
+                <?php else : ?>
+                    <a class="nav-link" aria-current="page" href="/user/login">->Login</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -36,25 +36,15 @@ class UserController extends Controller
         }
 
         // Authorization
-        if (!empty($this->authErrors($data))) {
+        $user = (new User())->loginAttempt($data['userName'], $data['userPassword']);
+        if (!$user) {
+            $errors[] = 'Wrong credentials. Try again, please.';
+            $_SESSION['flash']['validateErrors'] = $errors;
             return View::make('users/login')->render();
         }
 
-//        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['is_admin'] = $user['is_admin'];
         header('Location: /');
-    }
-
-    private function authErrors(array $data): array
-    {
-        $errors = [];
-
-        $user = new User();
-        if (!$user->checkCredentials($data['userName'], $data['userPassword'])) {
-            $errors[] = 'Wrong credentials. Try again, please.';
-        }
-
-        $_SESSION['flash']['validateErrors'] = $errors;
-
-        return $errors;
     }
 }

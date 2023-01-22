@@ -48,7 +48,15 @@ class User extends Model {
         return (int) $this->dbh->lastInsertId();
     }
 
-    public function checkCredentials(string $name, string $password): bool
+    /**
+     * Attempt to log in.
+     * Return user row or false.
+     *
+     * @param string $name
+     * @param string $password
+     * @return mixed
+     */
+    public function loginAttempt(string $name, string $password): mixed
     {
         $query = "SELECT * FROM users WHERE name = :name AND password = :password";
         $sth = $this->dbh->prepare($query);
@@ -58,7 +66,7 @@ class User extends Model {
 
         $sth->execute();
 
-        return $sth->rowCount() > 0;
+        return $sth->fetch(PDO::FETCH_ASSOC);
     }
 }
 
