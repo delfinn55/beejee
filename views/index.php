@@ -58,7 +58,6 @@
             <table id="tasks__list" class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
                     <th scope="col">Text</th>
@@ -73,7 +72,6 @@
                 <?php foreach ($tasks as $task) : ?>
 
                     <tr class="tasks__item">
-                        <th scope="row"><?php echo $task['id']; ?></th>
                         <td><?php echo $task['user_name']; ?></td>
                         <td><?php echo $task['user_email']; ?></td>
                         <td><?php echo $task['description']; ?></td>
