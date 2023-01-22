@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'host' => 'localhost',
-    'dbName' => 'bee',
-    'user' => 'root',
-    'password' => 'root',
+    'db_host' => 'localhost',
+    'db_name' => 'bee',
+    'db_user' => 'root',
+    'db_pass' => 'root',
 ];

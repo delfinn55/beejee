@@ -4,6 +4,14 @@ namespace App\Core;
 
 class Pagination
 {
+    /**
+     * Get current page.
+     * Checks if value from $_GET data more than possible.
+     *
+     * @param $itemCount
+     * @param $perPage
+     * @return float|int|mixed
+     */
     public static function getPage($itemCount, $perPage)
     {
         if (isset($_GET['page']) && filter_var($_GET['page'], FILTER_VALIDATE_INT)) {

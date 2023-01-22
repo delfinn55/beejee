@@ -62,6 +62,7 @@ class Task extends Model {
     /**
      * Number of tasks in the table.
      *
+     * @param array $conditions
      * @return int
      */
     public function count(array $conditions = []): int

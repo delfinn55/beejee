@@ -18,6 +18,8 @@ class App
     {
         $this->router = new Router();
 
+        Config::init();
+
         session_start();
     }
 

@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'perPage' => 3,
+    'tasks_per_page' => 3,
 ];

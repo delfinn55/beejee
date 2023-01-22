@@ -28,7 +28,7 @@ class TaskController
      */
     public function index()
     {
-        $perPage = Config::get('per_page');
+        $perPage = Config::get('tasks_per_page');
 
         $taskCount = $this->model->count();
 

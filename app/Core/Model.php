@@ -20,10 +20,11 @@ class Model {
      */
     public function __construct()
     {
+
         // Connect to the database
-        $dsn = 'mysql:dbname=bee;host=127.0.0.1';
-        $user = 'root';
-        $password = 'root';
+        $dsn = 'mysql:dbname=' . Config::get('db_name') . ';host=' . Config::get('db_host');
+        $user = Config::get('db_user');
+        $password = Config::get('db_pass');
 
         try {
             $this->dbh = new PDO($dsn, $user, $password);
