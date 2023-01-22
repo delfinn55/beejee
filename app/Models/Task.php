@@ -28,11 +28,11 @@ class Task extends Model {
     public function count(): int
     {
         $query = "SELECT COUNT(*) FROM tasks";
-        $stmt = $this->prepare($query);
+        $sth = $this->prepare($query);
 
-        $stmt->execute();
+        $sth->execute();
 
-        return $stmt->fetchColumn();
+        return $sth->fetchColumn();
     }
 
     /**
@@ -64,7 +64,7 @@ class Task extends Model {
      */
     public function update(int $id, string $user_id, string $description)
     {
-        $query = "UPDATE tasks SET user_id = :user_id, description = :description, due_date = :due_date WHERE id = :id";
+        $query = "UPDATE tasks SET user_id = :user_id, description = :description WHERE id = :id";
         $sth = $this->prepare($query);
 
         $sth->bindParam(':user_id', $user_id);

@@ -3,8 +3,29 @@
 namespace App\Models;
 
 use App\Core\Model;
+use PDO;
 
 class User extends Model {
+
+    /**
+     * Get user by email.
+     *
+     * @param string $email
+     * @return mixed
+     */
+    public function getByEmail(string $email): mixed
+    {
+        $query = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->dbh->prepare($query);
+
+        $stmt->bindParam(':email', $email);
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
     /**
      * Insert a new user.
      *
@@ -24,6 +45,5 @@ class User extends Model {
 
         return $this->dbh->lastInsertId();
     }
-
 }
 
