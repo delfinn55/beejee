@@ -43,7 +43,7 @@ class Controller
             $errors[] = 'Description must be at least 3 characters';
         }
 
-        $_SESSION['flash']['validateErrors'] = $errors;
+        $_SESSION['flash']['errors'] = $errors;
 
         return $errors;
     }

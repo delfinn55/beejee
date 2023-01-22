@@ -9,7 +9,6 @@ use App\Models\Task;
 use App\Models\User;
 use App\Views\View;
 use Exception;
-use JetBrains\PhpStorm\NoReturn;
 
 class TaskController extends Controller
 {
@@ -31,10 +30,10 @@ class TaskController extends Controller
     /**
      * Display all the tasks.
      *
-     * @return false|string|void
+     * @return bool|string
      * @throws Exception
      */
-    public function index()
+    public function index(): bool|string
     {
         $perPage = Config::get('tasks_per_page');
 
@@ -95,7 +94,7 @@ class TaskController extends Controller
         $result = $task->insert($user_id, $data['taskDescription']);
 
         if ($result) {
-            $_SESSION['flash']['successMessages'] = ['Your task have created successfully!'];
+            $_SESSION['flash']['success'] = ['Your task have created successfully!'];
         }
 
         header('Location: /');
@@ -131,7 +130,7 @@ class TaskController extends Controller
     public function update(): void
     {
         if (!isset($_SESSION['user']) || !$_SESSION['user']['is_admin']) {
-            $_SESSION['flash']['validateErrors'] = ['You are have not permissions for editing the task. Please, log in.'];
+            $_SESSION['flash']['errors'] = ['You are have not permissions for editing the task. Please, log in.'];
 
             header('Location: /user/login');
             exit();
@@ -160,9 +159,9 @@ class TaskController extends Controller
 
         $task->update($taskItem['id'], $data['taskDescription'], $data['isDone']);
 
-        $_SESSION['flash']['successMessages'] = ['Your task have updated successfully!'];
+        $_SESSION['flash']['success'] = ['Your task have updated successfully!'];
 
         header('Location: /');
-        return;
+        exit();
     }
 }

@@ -4,9 +4,6 @@ use App\Controllers\TaskController;
 use App\Controllers\UserController;
 use App\Core\App;
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 const APP_DIR = __DIR__ . '/..';
 const VIEWS_DIR = __DIR__ . '/../views';
 
