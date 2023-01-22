@@ -24,18 +24,14 @@ class Task extends Model {
     /**
      * Gets filtered tasks.
      *
-     * @param array $conditions
-     * @param int|null $limit
+     * @param int $limit
      * @param int $offset
      * @return array
      */
-    public function getFiltered(int $limit = 0, int $offset = 0, array $conditions = []): array
+    public function getFiltered(int $limit = 0, int $offset = 0): array
     {
         $query = "SELECT * FROM tasks";
         $params = [];
-
-        // WHERE block
-        $this->switchConditions($conditions, $query, $params);
 
         // LIMIT block
         if (
@@ -46,33 +42,11 @@ class Task extends Model {
             $query .= " LIMIT $limit OFFSET $offset";
         }
 
-        $stmt = $this->dbh->prepare($query);
-        $stmt->execute($params);
+        $sth = $this->dbh->prepare($query);
+        $sth->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    /**
-     * Add conditions to query.
-     *
-     * @param $conditions
-     * @param $query
-     * @param $params
-     * @return void
-     */
-    protected function switchConditions($conditions, &$query, &$params): void
-    {
-        $where = "";
-        foreach($conditions as $field => $value) {
-            $where .= " $field = :$field AND";
-            $params[":$field"] = $value;
-        }
-        if (!empty($where)) {
-            $where = " WHERE" . substr($where, 0, -4);
-            $query .= $where;
-        }
-    }
-
 
     /**
      * Number of tasks in the table.
@@ -84,12 +58,10 @@ class Task extends Model {
     {
         $query = "SELECT COUNT(*) FROM tasks";
 
-        $this->switchConditions($conditions, $query, $params);
+        $sth = $this->dbh->prepare($query);
+        $sth->execute();
 
-        $stmt = $this->dbh->prepare($query);
-        $stmt->execute($params);
-
-        return $stmt->fetchColumn();
+        return $sth->fetchColumn();
     }
 
     /**
@@ -116,31 +88,16 @@ class Task extends Model {
      * Update a task.
      *
      * @param int $id
-     * @param string $user_id
      * @param string $description
+     * @param bool $isDone
      */
-    public function update(int $id, string $user_id, string $description)
+    public function update(int $id, string $description, bool $isDone)
     {
-        $query = "UPDATE tasks SET user_id = :user_id, description = :description WHERE id = :id";
+        $query = "UPDATE tasks SET description = :description, is_done = :is_done WHERE id = :id";
         $sth = $this->prepare($query);
 
-        $sth->bindParam(':user_id', $user_id);
         $sth->bindParam(':description', $description);
-        $sth->bindParam(':id', $id);
-
-        $sth->execute();
-    }
-
-    /**
-     * Delete a task.
-     *
-     * @param int $id
-     */
-    public function delete(int $id)
-    {
-        $query = "DELETE FROM tasks WHERE id = :id";
-        $sth = $this->prepare($query);
-
+        $sth->bindParam(':is_done', $isDone);
         $sth->bindParam(':id', $id);
 
         $sth->execute();
