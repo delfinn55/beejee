@@ -10,7 +10,8 @@ class Task extends Model {
      *
      * @return array
      */
-    public function getAll() {
+    public function getAll(): array
+    {
         $query = "SELECT * FROM tasks";
         $sth = $this->prepare($query);
 
@@ -20,11 +21,12 @@ class Task extends Model {
     }
 
     /**
-     * Counts the number of tasks in the table
+     * Number of tasks in the table.
      *
-     * @return int The number of tasks
+     * @return int
      */
-    public function count() {
+    public function count(): int
+    {
         $query = "SELECT COUNT(*) FROM tasks";
         $stmt = $this->prepare($query);
 
@@ -34,17 +36,18 @@ class Task extends Model {
     }
 
     /**
-     * Inserts a new task
+     * Insert a new task.
      *
      * @param int $user_id
      * @param string $description
      * @return string
      */
-    public function insert($user_id, $description) {
-        $query = "INSERT INTO tasks (user_id, description, due_date) VALUES (:user_id, :description)";
+    public function insert(int $user_id, string $description): string
+    {
+        $query = "INSERT INTO tasks (user_id, description) VALUES (:user_id, :description)";
         $sth = $this->prepare($query);
 
-        $sth->bindParam(':name', $user_id);
+        $sth->bindParam(':user_id', $user_id);
         $sth->bindParam(':description', $description);
 
         $sth->execute();
@@ -53,13 +56,14 @@ class Task extends Model {
     }
 
     /**
-     * Updates a task.
+     * Update a task.
      *
      * @param int $id
      * @param string $user_id
      * @param string $description
      */
-    public function update($id, $user_id, $description) {
+    public function update(int $id, string $user_id, string $description)
+    {
         $query = "UPDATE tasks SET user_id = :user_id, description = :description, due_date = :due_date WHERE id = :id";
         $sth = $this->prepare($query);
 
@@ -75,7 +79,8 @@ class Task extends Model {
      *
      * @param int $id
      */
-    public function delete($id) {
+    public function delete(int $id)
+    {
         $query = "DELETE FROM tasks WHERE id = :id";
         $sth = $this->prepare($query);
 

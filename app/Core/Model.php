@@ -11,14 +11,15 @@ class Model {
     /**
      * The database handle.
      *
-     * @var PDO
+     * @var PDO|null
      */
-    protected $dbh;
+    protected PDO|null $dbh;
 
     /**
-     * Connects to the database.
+     * Connect to the database.
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Connect to the database
         $dsn = 'mysql:dbname=bee;host=127.0.0.1';
         $user = 'root';
@@ -38,14 +39,16 @@ class Model {
      * @param string $query
      * @return PDOStatement
      */
-    protected function prepare($query) {
+    protected function prepare(string $query): PDOStatement
+    {
         return $this->dbh->prepare($query);
     }
 
     /**
      * Close the database connection.
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         // Close the connection
         $this->dbh = null;
     }

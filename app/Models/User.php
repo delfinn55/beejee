@@ -12,7 +12,8 @@ class User extends Model {
      * @param string $email
      * @return string
      */
-    public function insert($name, $email) {
+    public function insert(string $name, string $email): string
+    {
         $query = "INSERT INTO users (name, email, password, is_admin) VALUES (:name, :email, '', 0)";
         $stmt = $this->prepare($query);
 
