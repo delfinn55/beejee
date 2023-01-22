@@ -9,7 +9,6 @@ use App\Models\Task;
 use App\Models\User;
 use App\Views\View;
 use Exception;
-use JetBrains\PhpStorm\NoReturn;
 
 class TaskController extends Controller
 {
@@ -31,10 +30,10 @@ class TaskController extends Controller
     /**
      * Display all the tasks.
      *
-     * @return false|string|void
+     * @return bool|string
      * @throws Exception
      */
-    public function index()
+    public function index(): bool|string
     {
         $perPage = Config::get('tasks_per_page');
 
@@ -163,6 +162,6 @@ class TaskController extends Controller
         $_SESSION['flash']['successMessages'] = ['Your task have updated successfully!'];
 
         header('Location: /');
-        return;
+        exit();
     }
 }

@@ -37,7 +37,7 @@ class View
      * @param $value
      * @return $this
      */
-    public function with($key, $value)
+    public function with($key, $value): static
     {
         $this->data[$key] = $value;
 
