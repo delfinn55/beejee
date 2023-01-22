@@ -13,7 +13,7 @@ class User extends Model {
      * @param string $email
      * @return mixed
      */
-    public function getByEmail(string $email): mixed
+    protected function getByEmail(string $email): mixed
     {
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->dbh->prepare($query);
@@ -33,8 +33,12 @@ class User extends Model {
      * @param string $email
      * @return string
      */
-    public function insert(string $name, string $email): string
+    public function upsert(string $name, string $email): string
     {
+        if ($user = $this->getByEmail($email)) {
+            return $user['id'];
+        }
+
         $query = "INSERT INTO users (name, email, password, is_admin) VALUES (:name, :email, '', 0)";
         $stmt = $this->prepare($query);
 
@@ -43,7 +47,7 @@ class User extends Model {
 
         $stmt->execute();
 
-        return $this->dbh->lastInsertId();
+        return (int) $this->dbh->lastInsertId();
     }
 }
 
