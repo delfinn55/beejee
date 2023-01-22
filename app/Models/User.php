@@ -16,13 +16,13 @@ class User extends Model {
     public function getByEmail(string $email): mixed
     {
         $query = "SELECT * FROM users WHERE email = :email";
-        $stmt = $this->dbh->prepare($query);
+        $sth = $this->dbh->prepare($query);
 
-        $stmt->bindParam(':email', $email);
+        $sth->bindParam(':email', $email);
 
-        $stmt->execute();
+        $sth->execute();
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -40,12 +40,12 @@ class User extends Model {
         }
 
         $query = "INSERT INTO users (name, email, password, is_admin) VALUES (:name, :email, '', 0)";
-        $stmt = $this->prepare($query);
+        $sth = $this->prepare($query);
 
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
+        $sth->bindParam(':name', $name);
+        $sth->bindParam(':email', $email);
 
-        $stmt->execute();
+        $sth->execute();
 
         return (int) $this->dbh->lastInsertId();
     }

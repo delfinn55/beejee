@@ -18,6 +18,9 @@ class TaskController
      */
     protected Task $model;
 
+    /**
+     * Create a new instance.
+     */
     public function __construct()
     {
         $this->model = new Task();
@@ -55,22 +58,43 @@ class TaskController
         return View::make('tasks/add')->render();
     }
 
+    /**
+     * Add new task.
+     *
+     * @return bool|string|void
+     * @throws Exception
+     */
     public function create()
     {
         $data['userEmail'] = $_POST['userEmail'] ?? '';
         $data['userName'] = $_POST['userName'] ?? '';
         $data['taskDescription'] = $_POST['taskDescription'] ?? '';
 
-        if (!empty($errors = $this->validationErrors($data))) {
+        // Validation
+        if (!empty($this->validationErrors($data))) {
             return View::make('tasks/add')->render();
         }
 
-        $_SESSION['flash']['successMessages'] = ['Your task have created successfully!'];
+        $user = new User();
+        $user_id = $user->upsert($data['userName'], $data['userEmail']);
+
+        $task = new Task();
+        $result = $task->insert($user_id, $data['taskDescription']);
+
+        if ($result) {
+            $_SESSION['flash']['successMessages'] = ['Your task have created successfully!'];
+        }
 
         header('Location: /');
     }
 
-    protected function validationErrors($data): array
+    /**
+     * Validation for task creation.
+     *
+     * @param $data
+     * @return array
+     */
+    private function validationErrors($data): array
     {
         $errors = [];
 
