@@ -44,6 +44,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Username</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Text</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -54,7 +55,8 @@
 
                     <tr class="tasks__item">
                         <th scope="row"><?php echo $task['id']; ?></th>
-                        <td><?php echo $task['user_id']; ?></td>
+                        <td><?php echo $task['user_name']; ?></td>
+                        <td><?php echo $task['user_email']; ?></td>
                         <td><?php echo $task['description']; ?></td>
                         <td>
                             <?php if ($task['is_done']) : ?>

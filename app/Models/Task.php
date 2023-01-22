@@ -30,8 +30,13 @@ class Task extends Model {
      */
     public function getFiltered(int $limit = 0, int $offset = 0): array
     {
-        $query = "SELECT * FROM tasks";
-        $params = [];
+        $query = "SELECT t.id,"
+            . " u.name AS user_name,"
+            . " u.email AS user_email,"
+            . " t.description,"
+            . " t.is_done"
+            . " FROM tasks as t"
+            . " JOIN users AS u ON t.user_id = u.id";
 
         // LIMIT block
         if (
