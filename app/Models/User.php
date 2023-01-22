@@ -6,7 +6,6 @@ use App\Core\Model;
 use PDO;
 
 class User extends Model {
-
     /**
      * Get user by email.
      *
@@ -24,7 +23,6 @@ class User extends Model {
 
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
-
 
     /**
      * Insert a new user.
@@ -48,6 +46,19 @@ class User extends Model {
         $sth->execute();
 
         return (int) $this->dbh->lastInsertId();
+    }
+
+    public function checkCredentials(string $name, string $password): bool
+    {
+        $query = "SELECT * FROM users WHERE name = :name AND password = :password";
+        $sth = $this->dbh->prepare($query);
+
+        $sth->bindParam(':name', $name);
+        $sth->bindParam(':password', $password);
+
+        $sth->execute();
+
+        return $sth->rowCount() > 0;
     }
 }
 

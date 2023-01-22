@@ -3,13 +3,14 @@
 namespace App\Controllers;
 
 use App\Core\Config;
+use App\Core\Controller;
 use App\Core\Pagination;
 use App\Models\Task;
 use App\Models\User;
 use App\Views\View;
 use Exception;
 
-class TaskController
+class TaskController extends Controller
 {
     /**
      * Task model.
@@ -59,7 +60,7 @@ class TaskController
      *
      * @throws Exception
      */
-    public function add(): bool|string
+    public function addForm(): bool|string
     {
         return View::make('tasks/add')->render();
     }
@@ -96,44 +97,5 @@ class TaskController
         }
 
         header('Location: /');
-    }
-
-    /**
-     * Validation for task creation.
-     *
-     * @param $data
-     * @return array
-     */
-    private function validationErrors($data): array
-    {
-        $errors = [];
-
-        // Email
-        if (empty($data['userEmail'])) {
-            $errors[] = 'User email is required';
-        }
-        if (!filter_var($data['userEmail'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Invalid email address';
-        }
-
-        // Name
-        if (empty($data['userName'])) {
-            $errors[] = 'User name is required';
-        }
-        if (!preg_match ("/^[0-9a-zA-z]*$/", $data['userName'])) {
-            $errors[] = 'Not valid name. Use alphabets and numbers only';
-        }
-
-        // Description
-        if (empty($data['taskDescription'])) {
-            $errors[] = 'Description is required';
-        }
-        if (strlen($data['taskDescription']) < 3) {
-            $errors[] = 'Description must be at least 3 characters';
-        }
-
-        $_SESSION['flash']['validateErrors'] = $errors;
-
-        return $errors;
     }
 }

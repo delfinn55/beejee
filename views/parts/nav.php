@@ -4,6 +4,7 @@
             <div class="navbar-nav">
                 <a class="nav-link" aria-current="page" href="/">->Home</a>
                 <a class="nav-link" aria-current="page" href="/task/add">->Add task</a>
+                <a class="nav-link" aria-current="page" href="/user/login">->Login</a>
             </div>
         </div>
     </div>
