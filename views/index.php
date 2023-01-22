@@ -49,12 +49,15 @@
         </div>
     </div>
 
+
+    <?php if (!empty($tasks)) : ?>
+
     <div class="row my-4">
         <div class="col">
+
             <table id="tasks__list" class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
                     <th scope="col">Text</th>
@@ -65,12 +68,10 @@
                     <?php endif; ?>
                 </tr>
                 </thead>
-
-
+                    
                 <?php foreach ($tasks as $task) : ?>
 
                     <tr class="tasks__item">
-                        <th scope="row"><?php echo $task['id']; ?></th>
                         <td><?php echo $task['user_name']; ?></td>
                         <td><?php echo $task['user_email']; ?></td>
                         <td><?php echo $task['description']; ?></td>
@@ -95,6 +96,7 @@
                     </tr>
 
                 <?php endforeach; ?>
+
             </table>
         </div>
     </div>
@@ -130,6 +132,18 @@
             </ul>
         </div>
     </div>
+
+    <?php else : ?>
+
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-warning" role="alert">
+                    No tasks yet
+                </div>
+            </div>
+        </div>
+
+    <?php endif; ?>
 
 </div>
 
