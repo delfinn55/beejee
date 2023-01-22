@@ -1,7 +1,7 @@
-<?php if (!empty($_SESSION['flash']['validateErrors'])) : ?>
+<?php if (!empty($_SESSION['flash']['errors'])) : ?>
     <div class="row">
         <ul class="validate-errors__list">
-            <?php foreach ($_SESSION['flash']['validateErrors'] as $error) : ?>
+            <?php foreach ($_SESSION['flash']['errors'] as $error) : ?>
                 <li>
                     <?php echo $error; ?>
                 </li>

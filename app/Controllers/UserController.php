@@ -44,7 +44,7 @@ class UserController extends Controller
         $user = (new User())->loginAttempt($data['userName'], $data['userPassword']);
         if (!$user) {
             $errors[] = 'Wrong credentials. Try again, please.';
-            $_SESSION['flash']['validateErrors'] = $errors;
+            $_SESSION['flash']['errors'] = $errors;
             return View::make('users/login')->render();
         }
 

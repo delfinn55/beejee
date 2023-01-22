@@ -18,10 +18,10 @@
 
     <?php include VIEWS_DIR . '/parts/validation-errors.php'; ?>
 
-    <?php if (!empty($_SESSION['flash']['successMessages'])) : ?>
+    <?php if (!empty($_SESSION['flash']['success'])) : ?>
         <div class="row">
             <ul class="success-messages__list">
-                <?php foreach ($_SESSION['flash']['successMessages'] as $message) : ?>
+                <?php foreach ($_SESSION['flash']['success'] as $message) : ?>
                     <li>
                         <?php echo $message; ?>
                     </li>
