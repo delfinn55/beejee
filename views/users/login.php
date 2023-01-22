@@ -13,21 +13,17 @@
 
     <div class="row">
         <div class="col">
-            <h2>Add new task</h2>
-            <form method="post" action="/task/create">
-                <div class="mb-3">
-                    <label for="inputEmail" class="form-label">Email address</label>
-                    <input type="text" class="form-control" name="userEmail" id="inputEmail">
-                </div>
+            <h2>Login form</h2>
+            <form method="post" action="/user/login">
                 <div class="mb-3">
                     <label for="inputName" class="form-label">Name</label>
                     <input type="text" class="form-control" name="userName" id="inputName">
                 </div>
                 <div class="mb-3">
-                    <label for="taskDescription" class="form-label">Text</label>
-                    <textarea class="form-control" name="taskDescription" id="taskDescription" rows="3"></textarea>
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="text" class="form-control" name="userPassword" id="inputPassword">
                 </div>
-                <button type="submit" class="btn btn-secondary">Submit</button>
+                <button type="submit" class="btn btn-secondary">Login</button>
             </form>
         </div>
     </div>

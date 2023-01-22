@@ -33,7 +33,9 @@ class Request
      */
     public function getPath(): mixed
     {
-        return $this->urlComponents['path'];
+        $path = $this->urlComponents['path'];
+
+        return ($path == '/') ? $path : rtrim($path, '/');
     }
 
 

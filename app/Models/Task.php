@@ -7,7 +7,25 @@ use PDO;
 
 class Task extends Model {
     /**
-     * Gets all tasks.
+     * Get one task by ID.
+     *
+     * @param int $id
+     * @return array
+     */
+    public function getById(int $id): array
+    {
+        $query = "SELECT * FROM tasks WHERE id = :id";
+        $sth = $this->prepare($query);
+
+        $sth->bindParam(':id', $id);
+
+        $sth->execute();
+
+        return $sth->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get all tasks.
      *
      * @return array
      */
@@ -22,8 +40,9 @@ class Task extends Model {
     }
 
     /**
-     * Gets filtered tasks.
+     * Get filtered tasks.
      *
+     * @param array $order
      * @param int $limit
      * @param int $offset
      * @return array
@@ -34,7 +53,8 @@ class Task extends Model {
             . " u.name AS user_name,"
             . " u.email AS user_email,"
             . " t.description,"
-            . " t.is_done"
+            . " t.is_done,"
+            . " t.is_edited"
             . " FROM tasks as t"
             . " JOIN users AS u ON t.user_id = u.id";
 
@@ -110,15 +130,21 @@ class Task extends Model {
      *
      * @param int $id
      * @param string $description
-     * @param bool $isDone
+     * @param int $isDone
      */
-    public function update(int $id, string $description, bool $isDone)
+    public function update(int $id, string $description, int $isDone)
     {
-        $query = "UPDATE tasks SET description = :description, is_done = :is_done WHERE id = :id";
+        $taskItem = $this->getById($id);
+        $oldDescription = $taskItem['description'];
+        $isEdited = (int) $taskItem['is_edited'] || ($oldDescription !== $description);
+        $isEdited = (int) $isEdited;
+
+        $query = "UPDATE tasks SET description = :description, is_done = :is_done, is_edited = :is_edited WHERE id = :id";
         $sth = $this->prepare($query);
 
         $sth->bindParam(':description', $description);
         $sth->bindParam(':is_done', $isDone);
+        $sth->bindParam(':is_edited', $isEdited);
         $sth->bindParam(':id', $id);
 
         $sth->execute();

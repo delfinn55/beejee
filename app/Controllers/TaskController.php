@@ -3,13 +3,15 @@
 namespace App\Controllers;
 
 use App\Core\Config;
+use App\Core\Controller;
 use App\Core\Pagination;
 use App\Models\Task;
 use App\Models\User;
 use App\Views\View;
 use Exception;
+use JetBrains\PhpStorm\NoReturn;
 
-class TaskController
+class TaskController extends Controller
 {
     /**
      * Task model.
@@ -57,9 +59,10 @@ class TaskController
     /**
      * Display form for adding task.
      *
+     * @return bool|string
      * @throws Exception
      */
-    public function add(): bool|string
+    public function addForm(): bool|string
     {
         return View::make('tasks/add')->render();
     }
@@ -96,44 +99,70 @@ class TaskController
         }
 
         header('Location: /');
+        exit();
     }
 
     /**
-     * Validation for task creation.
+     * Display form for editing task.
      *
-     * @param $data
-     * @return array
+     * @return bool|string
+     * @throws Exception
      */
-    private function validationErrors($data): array
+    public function editForm(): bool|string
     {
-        $errors = [];
-
-        // Email
-        if (empty($data['userEmail'])) {
-            $errors[] = 'User email is required';
-        }
-        if (!filter_var($data['userEmail'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Invalid email address';
+        if (!isset($_SESSION['user']) || !$_SESSION['user']['is_admin']) {
+            header('Location: /');
+            exit();
         }
 
-        // Name
-        if (empty($data['userName'])) {
-            $errors[] = 'User name is required';
-        }
-        if (!preg_match ("/^[0-9a-zA-z]*$/", $data['userName'])) {
-            $errors[] = 'Not valid name. Use alphabets and numbers only';
+        $task = new Task();
+        $taskItem = $task->getById($_GET['id']);
+
+        return View::make('tasks/edit')
+            ->with('taskItem', $taskItem)
+            ->render();
+    }
+
+    /**
+     * Update the task.
+     *
+     * @return void
+     */
+    public function update(): void
+    {
+        if (!isset($_SESSION['user']) || !$_SESSION['user']['is_admin']) {
+            $_SESSION['flash']['validateErrors'] = ['You are have not permissions for editing the task. Please, log in.'];
+
+            header('Location: /user/login');
+            exit();
         }
 
-        // Description
-        if (empty($data['taskDescription'])) {
-            $errors[] = 'Description is required';
-        }
-        if (strlen($data['taskDescription']) < 3) {
-            $errors[] = 'Description must be at least 3 characters';
+        if (empty($_POST['taskId'])) {
+            header('Location: /');
+            exit();
         }
 
-        $_SESSION['flash']['validateErrors'] = $errors;
+        $data['taskDescription'] = $_POST['taskDescription'] ?? '';
+        $data['isDone'] = (isset($_POST['taskIsDone']) && $_POST['taskIsDone'] == 'on') ? 1 : 0;
 
-        return $errors;
+        foreach ($data as $key => $value) {
+            $data[$key] = htmlspecialchars($value, ENT_QUOTES);
+        }
+
+        $task = new Task();
+        $taskItem = $task->getById($_POST['taskId']);
+
+        // Validation
+        if (!empty($this->validationErrors($data))) {
+            header('Location: /task/edit/?id=' . $taskItem['id']);
+            exit();
+        }
+
+        $task->update($taskItem['id'], $data['taskDescription'], $data['isDone']);
+
+        $_SESSION['flash']['successMessages'] = ['Your task have updated successfully!'];
+
+        header('Location: /');
+        return;
     }
 }
