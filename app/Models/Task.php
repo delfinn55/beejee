@@ -28,7 +28,7 @@ class Task extends Model {
      * @param int $offset
      * @return array
      */
-    public function getFiltered(int $limit = 0, int $offset = 0): array
+    public function getFiltered(array $order, int $limit = 0, int $offset = 0): array
     {
         $query = "SELECT t.id,"
             . " u.name AS user_name,"
@@ -37,6 +37,22 @@ class Task extends Model {
             . " t.is_done"
             . " FROM tasks as t"
             . " JOIN users AS u ON t.user_id = u.id";
+
+        // Ordering
+        $orderDir = $order['orderDir'];
+        $orderBy = 'id';
+        switch ($order['orderBy']) {
+            case 'name':
+                $orderBy = 'u.name';
+                break;
+            case 'email':
+                $orderBy = 'u.email';
+                break;
+            case 'status':
+                $orderBy = 't.is_done';
+                break;
+        }
+        $query .= " ORDER BY {$orderBy} {$orderDir}";
 
         // LIMIT block
         if (

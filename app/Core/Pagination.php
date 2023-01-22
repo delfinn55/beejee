@@ -12,7 +12,7 @@ class Pagination
      * @param $perPage
      * @return float|int|mixed
      */
-    public static function getPage($itemCount, $perPage)
+    public static function getPage($itemCount, $perPage): mixed
     {
         if (isset($_GET['page']) && filter_var($_GET['page'], FILTER_VALIDATE_INT)) {
             $page = $_GET['page'];

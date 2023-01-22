@@ -38,8 +38,13 @@ class TaskController
 
         $taskCount = $this->model->count();
 
+        $order = [
+            'orderBy' => $_GET['order_by'] ?? 'id',
+            'orderDir' => $_GET['order_dir'] ?? 'asc',
+        ];
+
         $page = Pagination::getPage($taskCount, $perPage);
-        $tasks = $this->model->getFiltered($perPage, ($page - 1) * $perPage);
+        $tasks = $this->model->getFiltered($order, $perPage, ($page - 1) * $perPage);
 
         return View::make('index')
             ->with('tasks', $tasks)

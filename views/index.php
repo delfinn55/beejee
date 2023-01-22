@@ -30,10 +30,19 @@
     <?php endif; ?>
 
     <div class="row my-4">
-        <div class="col">
-            <a href="/task/add">
-                <button type="button" class="btn btn-secondary">Add task</button>
-            </a>
+        <div class="col-10">
+            Sort by:
+            <ul>
+                <li>
+                    Name <a href="/?order_by=name&order_dir=asc">[a-z]</a><a href="/?order_by=name&order_dir=desc">[z-a]</a>
+                </li>
+                <li>
+                    Email <a href="/?order_by=email&order_dir=asc">[a-z]</a><a href="/?order_by=email&order_dir=desc">[z-a]</a>
+                </li>
+                <li>
+                    Status <a href="/?order_by=status&order_dir=asc">[a-z]</a><a href="/?order_by=status&order_dir=desc">[z-a]</a>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -46,7 +55,7 @@
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
                     <th scope="col">Text</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Status</th>
                 </tr>
                 </thead>
 
