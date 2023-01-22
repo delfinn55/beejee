@@ -6,18 +6,14 @@
 
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+
+    <?php include VIEWS_DIR . '/parts/head.php'; ?>
+
 <body>
 
-<div class="container">
+<div class="container mt-4 pt-4">
+
+    <?php include VIEWS_DIR . '/parts/nav.php'; ?>
 
     <?php if (!empty($_SESSION['flash']['successMessages'])) : ?>
         <div class="row">
@@ -102,8 +98,7 @@
 
 </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-    <script src="/js/main.js" ></script>
+    <?php include VIEWS_DIR . '/parts/footer-scripts.php'; ?>
+
 </body>
 </html>
