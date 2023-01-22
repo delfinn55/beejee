@@ -58,6 +58,7 @@ class TaskController extends Controller
     /**
      * Display form for adding task.
      *
+     * @return bool|string
      * @throws Exception
      */
     public function addForm(): bool|string
@@ -97,5 +98,56 @@ class TaskController extends Controller
         }
 
         header('Location: /');
+        exit();
+    }
+
+    /**
+     * Display form for editing task.
+     *
+     * @return bool|string
+     * @throws Exception
+     */
+    public function editForm(): bool|string
+    {
+        $task = new Task();
+        $taskItem = $task->getById($_GET['id']);
+
+        return View::make('tasks/edit')
+            ->with('taskItem', $taskItem)
+            ->render();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function update()
+    {
+        if (empty($_POST['taskId'])) {
+            header('Location: /');
+            exit();
+        }
+
+        $data['taskDescription'] = $_POST['taskDescription'] ?? '';
+        $data['isDone'] = ($_POST['taskIsDone'] == 'on') ? 1 : 0;
+
+        foreach ($data as $key => $value) {
+            $data[$key] = htmlspecialchars($value, ENT_QUOTES);
+        }
+
+        $task = new Task();
+        $taskItem = $task->getById($_POST['taskId']);
+
+        // Validation
+        if (!empty($this->validationErrors($data))) {
+            header('Location: /task/edit/?id=' . $taskItem['id']);
+            exit();
+        }
+
+        $task->update($taskItem['id'], $data['taskDescription'], $data['isDone']);
+
+        $_SESSION['flash']['successMessages'] = ['Your task have updated successfully!'];
+
+        header('Location: /');
+        exit();
     }
 }

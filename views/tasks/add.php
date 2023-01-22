@@ -9,22 +9,11 @@
 
     <?php include VIEWS_DIR . '/parts/nav.php'; ?>
 
-    <?php if (!empty($_SESSION['flash']['validateErrors'])) : ?>
-        <div class="row">
-            <ul class="validate-errors__list">
-                <?php foreach ($_SESSION['flash']['validateErrors'] as $error) : ?>
-                    <li>
-                        <?php echo $error; ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-
-            <?php unset($_SESSION['flash']); ?>
-        </div>
-    <?php endif; ?>
+    <?php include VIEWS_DIR . '/parts/validation-errors.php'; ?>
 
     <div class="row">
         <div class="col">
+            <h2>Add new task</h2>
             <form method="post" action="/task/create">
                 <div class="mb-3">
                     <label for="inputEmail" class="form-label">Email address</label>

@@ -19,6 +19,7 @@ class UserController extends Controller
     {
         if (isset($_SESSION['user'])) {
             header('Location: /');
+            exit();
         }
 
         return View::make('users/login')->render();
@@ -53,6 +54,7 @@ class UserController extends Controller
         ];
 
         header('Location: /');
+        exit();
     }
 
     /**
@@ -65,5 +67,6 @@ class UserController extends Controller
         unset($_SESSION['user']);
         session_destroy();
         header('Location: /user/login');
+        exit();
     }
 }

@@ -7,7 +7,25 @@ use PDO;
 
 class Task extends Model {
     /**
-     * Gets all tasks.
+     * Get one task by ID.
+     *
+     * @param int $id
+     * @return array
+     */
+    public function getById(int $id): array
+    {
+        $query = "SELECT * FROM tasks WHERE id = :id";
+        $sth = $this->prepare($query);
+
+        $sth->bindParam(':id', $id);
+
+        $sth->execute();
+
+        return $sth->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get all tasks.
      *
      * @return array
      */
@@ -22,8 +40,9 @@ class Task extends Model {
     }
 
     /**
-     * Gets filtered tasks.
+     * Get filtered tasks.
      *
+     * @param array $order
      * @param int $limit
      * @param int $offset
      * @return array
@@ -110,9 +129,9 @@ class Task extends Model {
      *
      * @param int $id
      * @param string $description
-     * @param bool $isDone
+     * @param int $isDone
      */
-    public function update(int $id, string $description, bool $isDone)
+    public function update(int $id, string $description, int $isDone)
     {
         $query = "UPDATE tasks SET description = :description, is_done = :is_done WHERE id = :id";
         $sth = $this->prepare($query);

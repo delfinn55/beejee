@@ -16,6 +16,8 @@
 
     <?php include VIEWS_DIR . '/parts/nav.php'; ?>
 
+    <?php include VIEWS_DIR . '/parts/validation-errors.php'; ?>
+
     <?php if (!empty($_SESSION['flash']['successMessages'])) : ?>
         <div class="row">
             <ul class="success-messages__list">
@@ -57,6 +59,10 @@
                     <th scope="col">Email</th>
                     <th scope="col">Text</th>
                     <th scope="col">Status</th>
+
+                    <?php if (isset($_SESSION['user']) && $_SESSION['user']['is_admin']) : ?>
+                        <th scope="col">Actions</th>
+                    <?php endif; ?>
                 </tr>
                 </thead>
 
@@ -75,6 +81,12 @@
                                 In progress
                             <?php endif; ?>
                         </td>
+
+                        <?php if (isset($_SESSION['user']) && $_SESSION['user']['is_admin']) : ?>
+                            <td>
+                                <a href="/task/edit/?id=<?php echo $task['id']; ?>">[Edit]</a>
+                            </td>
+                        <?php endif; ?>
                     </tr>
 
                 <?php endforeach; ?>

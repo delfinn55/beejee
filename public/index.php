@@ -28,9 +28,10 @@ $app = new App();
 */
 
 $app->router->addRoute('get', '/', [new TaskController(), 'index']);
-
 $app->router->addRoute('get', '/task/add', [new TaskController(), 'addForm']);
 $app->router->addRoute('post', '/task/create', [new TaskController(), 'create']);
+$app->router->addRoute('get', '/task/edit', [new TaskController(), 'editForm']);
+$app->router->addRoute('post', '/task/update', [new TaskController(), 'update']);
 
 $app->router->addRoute('get', '/user/login', [new UserController(), 'loginForm']);
 $app->router->addRoute('post', '/user/login', [new UserController(), 'login']);
