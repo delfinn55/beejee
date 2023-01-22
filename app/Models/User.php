@@ -13,7 +13,7 @@ class User extends Model {
      * @param string $email
      * @return mixed
      */
-    protected function getByEmail(string $email): mixed
+    public function getByEmail(string $email): mixed
     {
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->dbh->prepare($query);

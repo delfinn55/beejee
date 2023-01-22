@@ -5,3 +5,7 @@ body {
 .validate-errors__list {
     color: red;
 }
+
+.success-messages__list {
+    color: green;
+}

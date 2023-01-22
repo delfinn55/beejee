@@ -19,6 +19,20 @@
 
 <div class="container">
 
+    <?php if (!empty($_SESSION['flash']['successMessages'])) : ?>
+        <div class="row">
+            <ul class="success-messages__list">
+                <?php foreach ($_SESSION['flash']['successMessages'] as $message) : ?>
+                    <li>
+                        <?php echo $message; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+
+            <?php unset($_SESSION['flash']); ?>
+        </div>
+    <?php endif; ?>
+
     <div class="row my-4">
         <div class="col">
             <a href="/task/add">

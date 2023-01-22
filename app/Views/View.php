@@ -2,69 +2,73 @@
 
 namespace App\Views;
 
+use Exception;
+
 class View
 {
     /**
-     * View name.
+     * The path of the view file.
      *
      * @var string
      */
-    protected string $view;
+    private string $filePath;
 
     /**
-     * Passed parameters.
+     * The data passed to the view.
+     *
      * @var array
      */
-    protected array $params;
+    private array $data = [];
 
     /**
-     * Create the instance of view.
+     * Create a new application instance.
      *
-     * @param string $view
-     * @param array $params
+     * @param string $filePath
      */
-    public function __construct(
-        string $view,
-        array $params = []
-    ) {
-        $this->view = $view;
-        $this->params = $params;
+    public function __construct(string $filePath)
+    {
+        $this->filePath = VIEWS_DIR . '/' . $filePath . '.php';
     }
 
     /**
-     * Create a new View instance.
+     * Add data to the view.
      *
-     * @param string $view
-     * @param array $params
-     * @return static
+     * @param $key
+     * @param $value
+     * @return $this
      */
-    public static function make(string $view, array $params = []): static
+    public function with($key, $value)
     {
-        return new static($view, $params);
+        $this->data[$key] = $value;
+
+        return $this;
     }
 
     /**
-     * Get the content.
+     * Render the view
      *
-     * @return false|string|void
+     * @throws Exception
      */
-    public function render()
+    public function render(): bool|string
     {
-        $viewPath = VIEWS_DIR . '/' . $this->view . '.php';
-
-        if (!file_exists($viewPath)) {
-            die('View not found');
+        if (!file_exists($this->filePath)) {
+            throw new Exception("View not found at path {$this->filePath}");
         }
 
-        // Extract the params
-        foreach ($this->params as $key => $value) {
-            $$key = $value;
-        }
-
+        extract($this->data);
         ob_start();
-
-        include $viewPath;
-
+        include $this->filePath;
         return ob_get_clean();
+    }
+
+    /**
+     * Create an instance of the View class.
+     *
+     * @param string $filePath
+     * @return View
+     */
+    public static function make(string $filePath): View
+    {
+        return new View($filePath);
     }
 }
