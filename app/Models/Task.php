@@ -53,7 +53,8 @@ class Task extends Model {
             . " u.name AS user_name,"
             . " u.email AS user_email,"
             . " t.description,"
-            . " t.is_done"
+            . " t.is_done,"
+            . " t.is_edited"
             . " FROM tasks as t"
             . " JOIN users AS u ON t.user_id = u.id";
 
@@ -133,11 +134,17 @@ class Task extends Model {
      */
     public function update(int $id, string $description, int $isDone)
     {
-        $query = "UPDATE tasks SET description = :description, is_done = :is_done WHERE id = :id";
+        $taskItem = $this->getById($id);
+        $oldDescription = $taskItem['description'];
+        $isEdited = (int) $taskItem['is_edited'] || ($oldDescription !== $description);
+        $isEdited = (int) $isEdited;
+
+        $query = "UPDATE tasks SET description = :description, is_done = :is_done, is_edited = :is_edited WHERE id = :id";
         $sth = $this->prepare($query);
 
         $sth->bindParam(':description', $description);
         $sth->bindParam(':is_done', $isDone);
+        $sth->bindParam(':is_edited', $isEdited);
         $sth->bindParam(':id', $id);
 
         $sth->execute();

@@ -128,7 +128,7 @@ class TaskController extends Controller
         }
 
         $data['taskDescription'] = $_POST['taskDescription'] ?? '';
-        $data['isDone'] = ($_POST['taskIsDone'] == 'on') ? 1 : 0;
+        $data['isDone'] = (isset($_POST['taskIsDone']) && $_POST['taskIsDone'] == 'on') ? 1 : 0;
 
         foreach ($data as $key => $value) {
             $data[$key] = htmlspecialchars($value, ENT_QUOTES);

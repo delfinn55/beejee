@@ -76,9 +76,14 @@
                         <td><?php echo $task['description']; ?></td>
                         <td>
                             <?php if ($task['is_done']) : ?>
-                                Done
+                                >Done
                             <?php else : ?>
-                                In progress
+                                >In&nbsp;progress
+                            <?php endif; ?>
+
+                            <?php if ($task['is_edited']) : ?>
+                                <br>
+                                >Edited
                             <?php endif; ?>
                         </td>
 
