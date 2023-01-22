@@ -29,7 +29,7 @@ class Task extends Model {
      * @param int $offset
      * @return array
      */
-    public function getFiltered(array $conditions = [], int $limit = 0, int $offset = 0): array
+    public function getFiltered(int $limit = 0, int $offset = 0, array $conditions = []): array
     {
         $query = "SELECT * FROM tasks";
 
@@ -64,14 +64,25 @@ class Task extends Model {
      *
      * @return int
      */
-    public function count(): int
+    public function count(array $conditions = []): int
     {
         $query = "SELECT COUNT(*) FROM tasks";
-        $sth = $this->prepare($query);
 
-        $sth->execute();
+        $where = "";
+        $params = [];
+        foreach($conditions as $key => $value) {
+            $where .= " $key = :$key AND";
+            $params[":$key"] = $value;
+        }
+        if (!empty($where)) {
+            $where = " WHERE" . substr($where, 0, -4);
+            $query .= $where;
+        }
 
-        return $sth->fetchColumn();
+        $stmt = $this->dbh->prepare($query);
+        $stmt->execute($params);
+
+        return $stmt->fetchColumn();
     }
 
     /**

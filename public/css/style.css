@@ -1,0 +1,7 @@
+body {
+    font-family: 'Courier New';
+}
+
+.validate-errors__list {
+    color: red;
+}
